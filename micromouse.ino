@@ -114,7 +114,37 @@ void search()
     EEPROM.write(addf,distance[l][f][r]);
     addf++; 
 }
-
+void running()
+{ l=0;f=0;r=0;
+  while(distance[l][f][r]={1,0,1})
+  {
+     digitalWrite(2,HIGH);//forward
+     digitalWrite(3,LOW);
+     digitalWrite(4,HIGH);            
+     digitalWrite(5,LOW);
+     f++;
+  }
+  while(distance[l][f][r]={0,1,1})
+  {
+     digitalWrite(2,LOW);//left
+     digitalWrite(3,HIGH);
+     digitalWrite(4,HIGH);            
+     digitalWrite(5,LOW);
+     delay(500);
+     l++;
+  }
+  while(distance[l][f][r]={1,1,0})
+  {
+     digitalWrite(2,HIGH);//right
+     digitalWrite(3,LOW);
+     digitalWrite(5,HIGH);            
+     digitalWrite(4,LOW);
+     delay(500);
+     r++;
+  }
+}
+ 
+    
 
 
 void loop()
@@ -130,5 +160,5 @@ void loop()
         }
     }
     search();
-    running();
+    running();/*this function is still under construction it is just initialised */
 }
