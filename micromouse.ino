@@ -1,21 +1,21 @@
 /* ALL RIGHT RESERVED FROM THE HALF RED SKULL*/
 #include <EEPROM.h>
 
-#define distance_at_left left
-#define distance_at_front front
-#define distance_at_right right
+#define DISTANCE_AT_LEFT left
+#define DISTANCE_AT_FRONT front
+#define DISTANCE_AT_RIGHT right
 
-#define leftfront 2
-#define leftback 3 
-#define rightfront 4
-#define rightback 5
+#define LEFTFRONT 2
+#define LEFTBACK 3 
+#define RIGHTFRONT 4
+#define RIGHTBACK 5
 
-#define trig_f 6
-#define echo_f 7
-#define trig_l 8
-#define echo_l 9
-#define trig_r 10
-#define echo_r 11
+#define TRIG_F 6
+#define ECHO_F 7
+#define TRIG_L 8
+#define ECHO_L 9
+#define TRIG_R 10
+#define ECHO_R 11
 
 int addl=0,addf=257,addr=513;;
 int min_d=30;
@@ -24,16 +24,16 @@ long duration_l=0,duration_f=0,duration_r=0;
 boolean block[256][256][256];
 
 void setup()
-{ pinMode(leftfront,OUTPUT);
+{ pinMode(LEFTFRONT,OUTPUT);
   pinMode(leftback,OUTPUT);
-  pinMode(rightfront,OUTPUT);
-  pinMode(rightback,OUTPUT);
-  pinMode(trig_f,OUTPUT);
-  pinMode(echo_f,INPUT);
-  pinMode(trig_l,OUTPUT);
-  pinMode(echo_l,INPUT);
-  pinMode(trig_r,OUTPUT);
-  pinMode(echo_r,INPUT);
+  pinMode(RIGHTFRONT,OUTPUT);
+  pinMode(RIGHTBACK,OUTPUT);
+  pinMode(TRIG_F,OUTPUT);
+  pinMode(ECHO_F,INPUT);
+  pinMode(TRIG_L,OUTPUT);
+  pinMode(ECHO_L,INPUT);
+  pinMode(TRIG_R,OUTPUT);
+  pinMode(ECHO_R,INPUT);
   
   
   digitalWrite(2,LOW);
@@ -44,19 +44,19 @@ void setup()
 }
 
 void search()
-{   {digitalWrite(trig_f,LOW);digitalWrite(trig_l,LOW);digitalWrite(trig_r,LOW);}
+{   {digitalWrite(TRIG_F,LOW);digitalWrite(TRIG_L,LOW);digitalWrite(TRIG_R,LOW);}
     delayMicroseconds(2);
-    {digitalWrite(trig_f,HIGH);digitalWrite(trig_l,HIGH);digitalWrite(trig_r,HIGH);}
+    {digitalWrite(TRIG_F,HIGH);digitalWrite(TRIG_L,HIGH);digitalWrite(TRIG_R,HIGH);}
     delayMicroseconds(10);
-    {digitalWrite(trig_f,LOW);digitalWrite(trig_l,LOW);digitalWrite(trig_r,LOW);}
+    {digitalWrite(TRIG_F,LOW);digitalWrite(TRIG_L,LOW);digitalWrite(TRIG_R,LOW);}
     
-    duration_l= pulseIn(echo_l, HIGH);
+    duration_l= pulseIn(ECHO_L, HIGH);
     // Calculating the distance
     left= duration_l*0.34/2;
-    duration_r= pulseIn(echo_r, HIGH);
+    duration_r= pulseIn(ECHO_R, HIGH);
     // Calculating the distance
     right= duration_r*0.34/2;
-    duration_f= pulseIn(echo_f, HIGH);
+    duration_f= pulseIn(ECHO_F, HIGH);
     // Calculating the distance
     front= duration_f*0.34/2;
     
@@ -69,7 +69,7 @@ void search()
             digitalWrite(4,HIGH);            
             digitalWrite(5,LOW);
             delay(500);
-        duration_l= pulseIn(echo_l, HIGH);
+        duration_l= pulseIn(ECHO_L, HIGH);
         // Calculating the distance
         left= duration_l*0.34/2;
         l++;
@@ -89,7 +89,7 @@ void search()
             digitalWrite(4,LOW);            
             digitalWrite(5,HIGH);
             delay(500);
-        duration_r= pulseIn(echo_l, HIGH);
+        duration_r= pulseIn(ECHO_L, HIGH);
         // Calculating the distance
         right= duration_r*0.34/2;
         r++;
