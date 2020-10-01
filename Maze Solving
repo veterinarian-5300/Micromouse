@@ -1,0 +1,140 @@
+#include <EEPROM.h>
+int left = 0;//distance on the left side of the mouse
+int front = 0;//distance on the front side of the mouse
+int right = 0;//distance on the right side of the mouse
+int walk = 0;//current block dimentions
+int motor = 0;
+int uVcc=9;
+int uGnd=8;
+int motor[256];//data to store path to be folowed by motors
+int i=0;
+int address=0;
+
+
+long readUltrasonicDistance(int triggerPin, int echoPin)
+{
+  pinMode(triggerPin, OUTPUT);  // Clear the trigger
+  digitalWrite(triggerPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigger pin to HIGH state for 10 microseconds
+  digitalWrite(triggerPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(triggerPin, LOW);
+  pinMode(echoPin, INPUT);
+  // Reads the echo pin, and returns the sound wave travel time in microseconds
+  return pulseIn(echoPin, HIGH);
+}
+int checkblock(i)
+{
+  left = 0.01723 * readUltrasonicDistance(2, 3);
+  front = 0.01723 * readUltrasonicDistance(4, 5);
+  right = 0.01723 * readUltrasonicDistance(6, 7);
+  if (left < 10) 
+  {
+    if (front < 10) 
+    {
+      if (right < 10) 
+      {
+        walk = 111;
+      } 
+      else
+      {
+        walk = 110;
+      }
+    }
+    else 
+    {
+      if (right < 10) 
+      {
+        walk = 101;
+      } 
+      else 
+      {
+        walk = 100;
+      }
+    }
+  } 
+  else
+   {
+    if (front < 10) 
+    {
+      if (right < 10) 
+      {
+        walk = 11;
+      } 
+      else 
+      {
+        walk = 10;
+      }
+    } 
+    else 
+    {
+      if (right < 10) 
+      {
+        walk = 1;
+      } 
+      else 
+      {
+        walk = 0;
+      }
+    }
+  }
+return walk;
+}
+
+void setup()
+{
+  pinMode(13, OUTPUT);
+  pinMode(9 , OUTPUT);
+  pinMode(8 , OUTPUT);
+
+}
+
+void loop()
+{
+  /*digitalWrite(9, HIGH);
+  digitalWrite(8, LOW);// for ultrasonic sensor pins vcc and gnd
+  */
+  
+  motor[i] = checkblock(i);
+  EEPROM.write(address,motor[i]);
+  i++;address+=4;//since every integer takes 4 bytes or 2 bytes
+  delay(250);// a little for bot to pass vary in real time default 250
+  if(i>0 && i%3==0)
+  {
+    if((motor[i-3]==100 && motor[i-2]==110 && motor[i-1]==110 && motor[i]==110)
+      ||(motor[i-3]==001 && motor[i-2]==011 && motor[i-1]==011 && motor[i]==011))
+      
+    {
+      //___________
+     //|           |
+     //|           |
+     //|           |
+     //|           |
+     //|___________
+      //___________
+     //|           
+     //|           |
+     //|           |
+     //|           |
+     //|___________|
+      //_________
+     //|           |
+     //|           |
+     //|           |
+     //|           |
+     //|___________|
+      //  _________
+     //|           |
+     //|           |
+     //|           |
+     //|           |
+     //|___________|
+      //stop for 3 seccond and return by tracingg the path motor says
+      digitalWrite(8,LOW);
+      digitalWrite(10,LOW);
+      delay(3000);
+       
+    }
+  }
+}
